@@ -73,20 +73,14 @@
   <ItemGroup>
     <Compile Include="App_Start\RegisterClientValidationExtensions.cs" />
     <Compile Include="Controllers\AngeboteManagerController.cs" />
-<<<<<<< HEAD
-=======
     <Compile Include="Controllers\BewerbungenController.cs" />
->>>>>>> MAlex
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Benutzer.cs" />
     <Compile Include="Models\Bewerbung.cs" />
-<<<<<<< HEAD
-=======
     <Compile Include="Models\BewerbungenUebersicht.cs" />
->>>>>>> MAlex
     <Compile Include="Models\DBManager.cs" />
     <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\Security\HiwiBoerseRoleProvider.cs" />
@@ -115,10 +109,7 @@
     <Content Include="Content\smoothness\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\smoothness\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\smoothness\jquery-ui-1.8.20.custom.css" />
-<<<<<<< HEAD
     <Content Include="Content\stellenangebotÜbersicht_webgrid.css" />
-=======
->>>>>>> MAlex
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -221,17 +212,10 @@
     <Content Include="Views\User\KontoAnbieterBearbeiten.cshtml" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <Content Include="Views\AngeboteManager\StellenAngebot.cshtml" />
+    <Content Include="Views\AngeboteManager\StellenAngebotTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\AngeboteManager\_StellenAngebotSteuerung.cshtml" />
-=======
-    <Content Include="Views\User\KontoEdit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\AngeboteManager\StellenAngebot.cshtml" />
->>>>>>> MAlex
   </ItemGroup>
   <ItemGroup>
     <None Include="Views\AngeboteManager\StellenangebotBearbeiten.cshtml">
@@ -240,13 +224,11 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_Stellenangebote.cshtml" />
     <Content Include="Views\Shared\_Filter.cshtml" />
-<<<<<<< HEAD
-=======
     <Content Include="Views\Bewerbungen\Bewerbung.cshtml" />
-    <Content Include="Views\Bewerbungen\_BewerbungenSteuerung.cshtml" />
     <Content Include="Views\Bewerbungen\_AngebotBewerbungenSteuerung.cshtml" />
     <Content Include="Views\Bewerbungen\_BewerbungenStellenangebot.cshtml" />
->>>>>>> MAlex
+    <Content Include="Views\Bewerbungen\_BewerbungenSteuerung.cshtml" />
+    <Content Include="Views\Shared\StellenAngebot.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

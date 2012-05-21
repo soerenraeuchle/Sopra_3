@@ -18,7 +18,6 @@ D:\SoPra\Login\bin\EntityFramework.xml
 D:\SoPra\Login\obj\Debug\ResolveAssemblyReference.cache
 D:\SoPra\Login\obj\Debug\Login.dll
 D:\SoPra\Login\obj\Debug\Login.pdb
-<<<<<<< HEAD
 D:\Sopra_3\Login\bin\Login.dll
 D:\Sopra_3\Login\bin\Login.pdb
 D:\Sopra_3\Login\bin\DataAnnotationsExtensions.ClientValidation.dll
@@ -29,25 +28,13 @@ D:\Sopra_3\Login\bin\EntityFramework.xml
 D:\Sopra_3\Login\obj\Debug\ResolveAssemblyReference.cache
 D:\Sopra_3\Login\obj\Debug\Login.dll
 D:\Sopra_3\Login\obj\Debug\Login.pdb
-=======
-C:\Users\Alex\Documents\SoPra\Login\bin\Login.dll
-C:\Users\Alex\Documents\SoPra\Login\bin\Login.pdb
-C:\Users\Alex\Documents\SoPra\Login\bin\DataAnnotationsExtensions.ClientValidation.dll
-C:\Users\Alex\Documents\SoPra\Login\bin\DataAnnotationsExtensions.dll
-C:\Users\Alex\Documents\SoPra\Login\bin\EntityFramework.dll
-C:\Users\Alex\Documents\SoPra\Login\bin\WebActivator.dll
-C:\Users\Alex\Documents\SoPra\Login\bin\EntityFramework.xml
-C:\Users\Alex\Documents\SoPra\Login\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Alex\Documents\SoPra\Login\obj\Debug\Login.dll
-C:\Users\Alex\Documents\SoPra\Login\obj\Debug\Login.pdb
-C:\Users\Alex\Documents\Uni\SoPra\Backup\SoPra\Login\bin\Login.dll
-C:\Users\Alex\Documents\Uni\SoPra\Backup\SoPra\Login\bin\Login.pdb
-C:\Users\Alex\Documents\Uni\SoPra\Backup\SoPra\Login\bin\DataAnnotationsExtensions.ClientValidation.dll
-C:\Users\Alex\Documents\Uni\SoPra\Backup\SoPra\Login\bin\DataAnnotationsExtensions.dll
-C:\Users\Alex\Documents\Uni\SoPra\Backup\SoPra\Login\bin\EntityFramework.dll
-C:\Users\Alex\Documents\Uni\SoPra\Backup\SoPra\Login\bin\WebActivator.dll
-C:\Users\Alex\Documents\Uni\SoPra\Backup\SoPra\Login\bin\EntityFramework.xml
-C:\Users\Alex\Documents\Uni\SoPra\Backup\SoPra\Login\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\Alex\Documents\Uni\SoPra\Backup\SoPra\Login\obj\Debug\Login.dll
-C:\Users\Alex\Documents\Uni\SoPra\Backup\SoPra\Login\obj\Debug\Login.pdb
->>>>>>> MAlex
+D:\Studium\Backup Sopra\Login\bin\Login.dll
+D:\Studium\Backup Sopra\Login\bin\Login.pdb
+D:\Studium\Backup Sopra\Login\bin\DataAnnotationsExtensions.ClientValidation.dll
+D:\Studium\Backup Sopra\Login\bin\DataAnnotationsExtensions.dll
+D:\Studium\Backup Sopra\Login\bin\EntityFramework.dll
+D:\Studium\Backup Sopra\Login\bin\WebActivator.dll
+D:\Studium\Backup Sopra\Login\bin\EntityFramework.xml
+D:\Studium\Backup Sopra\Login\obj\Debug\ResolveAssemblyReference.cache
+D:\Studium\Backup Sopra\Login\obj\Debug\Login.dll
+D:\Studium\Backup Sopra\Login\obj\Debug\Login.pdb
