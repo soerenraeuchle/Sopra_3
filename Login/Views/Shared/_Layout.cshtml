@@ -31,7 +31,11 @@
         @Html.Partial("_BenutzerSteuerung")
         if(Roles.IsUserInRole("Anbieter"))
         {
-            @Html.Action("_StellenAngebotSteuerung", "AngeboteManager")
+            @Html.Action("_AngebotBewerbungenSteuerung", "Bewerbungen")
+        }
+        else if(Roles.IsUserInRole("Bewerber"))
+        {
+            @Html.Action("_BewerbungenSteuerung", "Bewerbungen")
         }
       }
     }

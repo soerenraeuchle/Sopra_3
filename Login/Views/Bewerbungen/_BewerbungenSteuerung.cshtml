@@ -1,0 +1,54 @@
+﻿@model Login.Models.BewerbungenUebersicht
+           
+@{ 
+    Layout = "";
+} 
+
+<div class="login">
+<h2>Meine Bewerbungen</h2>
+
+@{
+    if(Model.bewerbungen.Count != 0)
+    {
+        for (int i = 0; i < Model.bewerbungen.Count; i++ )
+        {
+            <div>@Model.bewerbungen.ElementAt(i).stelle.stellenName
+            @{
+                if(Model.bewerbungen.ElementAt(i).status != 1)
+                {
+                    if(Model.bewerbungen.ElementAt(i).benachrichtigung == 2)
+                    {
+                        <div>
+                            Bewerbung wurde aktualisiert
+                        </div>   
+                    }
+                else if(Model.bewerbungen.ElementAt(i).benachrichtigung == 2)
+                    {
+                        <div>
+                            Bewerbung wurde aktualisiert
+                        </div>   
+                    }
+                }else
+                {
+                    <div>
+                        Ihre Bewerbung wurde abgelehnt
+                    </div>   
+                }
+            }
+            @using (Html.BeginForm("Bewerbung", "Bewerbungen", FormMethod.Get))
+            {
+                @Html.HiddenFor(model => model.bewerbungen.ElementAt(i).stelle.id)
+                <input type="submit"  value="ansehen" />
+            }
+            </div>                                                                                             
+ 
+        }
+    }
+    else
+    {
+         <div>Sie haben keine Bewerbungen</div>   
+    }
+}
+
+
+</div>

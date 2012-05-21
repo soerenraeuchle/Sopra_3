@@ -50,26 +50,6 @@ namespace Login.Controllers
 
 
 
-
-        /// <summary>
-        /// Läd alle eigenen Stellenangebote in eine Liste und fügt sie der Partiellen View _StellenangeboteÜbersicht hinzu
-        /// </summary>
-        /// <returns></returns>
-        [Authorize(Roles = "Anbieter")]
-        public PartialViewResult _StellenAngebotSteuerung()
-        {
-            string email = HttpContext.User.Identity.Name;
-            Anbieter benutzer = DB.anbieterAuslesen(email);
-
-
-            StellenangebotUebersicht angebote = new StellenangebotUebersicht(DB.stellenangebotUebersichtLesen(benutzer.id));
-            return PartialView(angebote);
-
-        }
-
-
-        
-
         /// <summary>
         /// Läd ein ausgewähltes Stellenangebot mithilfe einer id, die View Variable gibt an ob ein Stellenangebot angezeigt wird oder bearbeitet wird
         /// </summary>

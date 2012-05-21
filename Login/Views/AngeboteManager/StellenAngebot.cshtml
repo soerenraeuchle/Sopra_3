@@ -94,15 +94,17 @@
                 @Html.HiddenFor(model => model.id)
                 <input type="submit" value="Löschen" />
             }
-          }
       }
-      else
+      else if (Roles.IsUserInRole("Bewerber"))
       {
-
+            using (Html.BeginForm("Bewerbung", "Bewerbungen"))
+            {
+                @Html.HiddenFor(model => model.id)
+                <input type="submit" value="Bewerben" />
+            }
       }
     }
-    
-    
-
-
+    <br />
+    @Html.Action("_BewerbungenStellenangebot", "Bewerbungen", new { stellenangebotID = Model.id })
+    <br />
 </div>

@@ -248,7 +248,6 @@ namespace Login.Controllers
         /// <param name="user">Login model</param>
         /// <returns>Index.cshtml</returns>
         [HttpPost]
-        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Login(Login.Models.Login login)
         {
             if (ModelState.IsValid) //Model Valedierung ist korrekt (Email Format + Passwort)

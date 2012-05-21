@@ -1,0 +1,53 @@
+﻿@model Login.Models.StellenangeboteBewerbungUebersicht
+           
+@{ 
+    Layout = "";
+} 
+
+<div class="login">
+<h2>Meine Bewerbungen</h2>
+
+@{
+    if(Model.stellenBewerbung.Count != 0)
+    {
+        for (int i = 0; i < Model.stellenBewerbung.Count; i++ )
+        {
+            <div>   
+                @Model.stellenBewerbung.ElementAt(i).stellenName
+                @{
+                    int anzahlNeu = 0;
+                    int anzahlAktualisiert = 0;
+                    for(int j = 0; j < Model.stellenBewerbung.ElementAt(i).bewerbungen.Count; j++)
+                    {
+                        if (Model.stellenBewerbung.ElementAt(i).bewerbungen.ElementAt(j).bewerbung.benachrichtigung == 1)
+                        {
+                            anzahlNeu++;
+                        }
+                        else if (Model.stellenBewerbung.ElementAt(i).bewerbungen.ElementAt(j).bewerbung.benachrichtigung == 3)
+                        {
+                            anzahlAktualisiert++;
+                        }
+                    }
+                    <div>
+                        @anzahlNeu neue Bewerbungen <br />
+                        @anzahlAktualisiert Bewerbungen aktualisiert
+                    </div>
+                    using (Html.BeginForm("GetStelleAngebot", "AngeboteManager", new {view = "anzeigen"}))
+                    {
+                        @Html.HiddenFor(model => model.stellenBewerbung.ElementAt(i).id)
+                        
+                        <input type="submit" value="ansehen" />     
+                    }   
+                 }    
+            </div>                                                                                             
+ 
+        }
+    }
+    else
+    {
+         <div>Sie haben keine Bewerbungen</div>   
+    }
+}
+
+
+</div>
