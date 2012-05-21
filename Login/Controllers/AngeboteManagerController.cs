@@ -60,9 +60,11 @@ namespace Login.Controllers
         {
             Stellenangebot aktStelle = DB.stellenangebotLesen(Convert.ToInt32(id));
             if (Request.IsAuthenticated)
+            {
+                if (Roles.GetRolesForUser(HttpContext.User.Identity.Name)[0].Equals("Anbieter"))
                 {
                     Anbieter anbieter = DB.anbieterAuslesen(HttpContext.User.Identity.Name);
-                    Anbieter stellvertreter = DB.anbieterAuslesenID(anbieter.stellvertreterID);
+                    Anbieter stellvertreter = DB.anbieterAuslesen(anbieter.stellvertreterID);
                     ViewBag.Anbieter = false;
                     ViewBag.Stellvertreter = false;
                     if (stellvertreter.email == HttpContext.User.Identity.Name)
@@ -74,6 +76,7 @@ namespace Login.Controllers
                         ViewBag.Anbieter = true;
                     }
                 }
+            }
             ModelState.Clear();
             if (view == "anzeigen")
             {

@@ -22,20 +22,14 @@
                             Bewerbung wurde aktualisiert
                         </div>   
                     }
-                else if(Model.bewerbungen.ElementAt(i).benachrichtigung == 2)
-                    {
-                        <div>
-                            Bewerbung wurde aktualisiert
-                        </div>   
-                    }
                 }else
                 {
                     <div>
-                        Ihre Bewerbung wurde abgelehnt
-                    </div>   
+                      Ihre Bewerbung wurde abgelehnt
+                   </div>   
                 }
             }
-            @using (Html.BeginForm("Bewerbung", "Bewerbungen", FormMethod.Get))
+            @using (Html.BeginForm("NeueBewerbung", "Bewerbungen", FormMethod.Get))
             {
                 @Html.HiddenFor(model => model.bewerbungen.ElementAt(i).stelle.id)
                 <input type="submit"  value="ansehen" />

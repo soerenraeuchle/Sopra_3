@@ -19,8 +19,8 @@ namespace Login.Controllers
         /// </summary>
         /// <param name="stelle"></param>
         /// <returns></returns>
-        [HttpGet]
-        public ActionResult Bewerbung(Stellenangebot stelle)
+        
+        public ActionResult NeueBewerbung(Stellenangebot stelle)
         {
             Stellenangebot angebot = DB.stellenangebotLesen(stelle.id);
             string email = HttpContext.User.Identity.Name;

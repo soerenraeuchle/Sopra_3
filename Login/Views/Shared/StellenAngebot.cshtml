@@ -1,7 +1,7 @@
 ﻿@model Login.Models.Stellenangebot
 
 @{
-    ViewBag.Title = "Stellenangebot";
+    ViewBag.Title = "StellenAngebot";
 }
 
 <h2>Stellenangebot - @Model.stellenName</h2>
@@ -78,8 +78,8 @@
             <div id="bewerbungsFrist">@Model.bewerbungsFrist.ToShortDateString()</div>
         </div>
     </div>
-
-    @{if (Roles.IsUserInRole("Anbieter"))
+    @{if(Request.IsAuthenticated){
+        if (Roles.IsUserInRole("Anbieter"))
       {
           if(@ViewBag.Anbieter || @ViewBag.Stellvertreter)
           {
@@ -94,17 +94,21 @@
                 @Html.HiddenFor(model => model.id)
                 <input type="submit" value="Löschen" />
             }
+             <br />
+            @Html.Action("_BewerbungenStellenangebot", "Bewerbungen", new { stellenangebotID = Model.id })
+            <br />
+          }
+
       }
-      else if (Roles.IsUserInRole("Bewerber"))
-      {
-            using (Html.BeginForm("Bewerbung", "Bewerbungen"))
+        else if (Roles.IsUserInRole("Bewerber"))
+        {
+            using (Html.BeginForm("NeueBewerbung", "Bewerbungen"))
             {
                 @Html.HiddenFor(model => model.id)
                 <input type="submit" value="Bewerben" />
             }
       }
     }
-    <br />
-    @Html.Action("_BewerbungenStellenangebot", "Bewerbungen", new { stellenangebotID = Model.id })
-    <br />
+    }
+
 </div>

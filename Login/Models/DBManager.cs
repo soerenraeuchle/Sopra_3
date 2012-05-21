@@ -505,6 +505,8 @@ namespace Login.Models
 
                 connect();
                 SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
                     reader.Read();
 
                     //Anbieter auslesen
@@ -518,7 +520,7 @@ namespace Login.Models
                     benutzer.id = reader.GetInt32(4);
 
                     benutzer.email = email;
-
+                }
                     reader.Close();
                 
                 disconnect();
@@ -545,18 +547,20 @@ namespace Login.Models
 
                 connect();
                 SqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
+                if (reader.HasRows)
+                {
+                    reader.Read();
 
-                //Anbieter auslesen
-                benutzer.vorname = reader.GetString(0);
-                benutzer.nachname = reader.GetString(1);
-                benutzer.institut = reader.GetString(2);
+                    //Anbieter auslesen
+                    benutzer.vorname = reader.GetString(0);
+                    benutzer.nachname = reader.GetString(1);
+                    benutzer.institut = reader.GetString(2);
 
-                benutzer.passwort = reader.GetString(3);
-                benutzer.confirmPasswort = benutzer.passwort;
+                    benutzer.passwort = reader.GetString(3);
+                    benutzer.confirmPasswort = benutzer.passwort;
 
-                benutzer.email = reader.GetString(4);
-
+                    benutzer.email = reader.GetString(4);
+                }
                 reader.Close();
 
                 disconnect();

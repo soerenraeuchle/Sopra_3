@@ -12,14 +12,9 @@
     
     
     WebGrid grid = new WebGrid((IEnumerable<Login.Models.Stellenangebot>)Model.angebote,
-        //selectionFieldName: "SelectedRow",
-        ajaxUpdateContainerId: "grid",
-        //defaultSort: "institut",
-        //canPage: false,
-        //canSort: true);
         defaultSort: "stellenName",
          rowsPerPage: 5,
-         canPage: true,
+         canPage: false,
          canSort: true,
          fieldNamePrefix: "grid_",
          pageFieldName: "inside",
