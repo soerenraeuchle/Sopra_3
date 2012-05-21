@@ -1,0 +1,16 @@
+﻿@model Login.Models.Filter
+
+@{
+    Layout = "";
+}
+
+
+@using (Html.BeginForm("_StellenAngeboteÜbersicht", "AngeboteManager"))
+{
+    @Html.DropDownListFor(model => model.institut, (IEnumerable<SelectListItem>)ViewData["Institute"])
+    @Html.DropDownListFor(model => model.monatsStunden, (IEnumerable<SelectListItem>)ViewData["MonatsStunden"])
+    @Html.TextBoxFor(model => model.Name)
+
+      <input type=submit value="Filtern" />
+
+}

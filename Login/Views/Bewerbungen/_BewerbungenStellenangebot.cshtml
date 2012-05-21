@@ -1,0 +1,51 @@
+﻿@model Login.Models.StellenangebotAnsicht
+           
+@{ 
+    Layout = "";
+} 
+
+<h3>Bewerbungen: </h3>
+
+@{
+    for (int i = 0; i < Model.bewerbungen.Count; i++)
+    {
+        if(Model.bewerbungen.ElementAt(i).bewerbung.status == 0)
+        {
+        if (Model.bewerbungen.ElementAt(i).bewerbung.benachrichtigung == 1)
+        {
+        <div class="bewerbungRot">
+            @Model.bewerbungen.ElementAt(i).bewerber.vorname 
+            @Model.bewerbungen.ElementAt(i).bewerber.nachname 
+            @Model.bewerbungen.ElementAt(i).bewerber.studiengang 
+            @Model.bewerbungen.ElementAt(i).bewerber.fachsemester 
+        </div>  
+        } 
+        else if (Model.bewerbungen.ElementAt(i).bewerbung.benachrichtigung == 3)
+        {
+        <div class="bewerbungOrange">
+            @Model.bewerbungen.ElementAt(i).bewerber.vorname 
+            @Model.bewerbungen.ElementAt(i).bewerber.nachname 
+            @Model.bewerbungen.ElementAt(i).bewerber.studiengang 
+            @Model.bewerbungen.ElementAt(i).bewerber.fachsemester 
+        </div>  
+        } 
+        else
+        {
+            <div>
+            @Model.bewerbungen.ElementAt(i).bewerber.vorname 
+            @Model.bewerbungen.ElementAt(i).bewerber.nachname 
+            @Model.bewerbungen.ElementAt(i).bewerber.studiengang 
+            @Model.bewerbungen.ElementAt(i).bewerber.fachsemester 
+            </div>
+        }
+        }
+        
+        using (Html.BeginForm("Bewerbung", "Bewerbungen", new {bewerbungID = Model.bewerbungen.ElementAt(i).bewerbung.id}))
+            {
+                <input type="submit" value="ansehen" />
+            }
+            <br />
+    }
+}
+
+

@@ -1,0 +1,182 @@
+﻿@model Login.Models.BewerbungAnsicht
+
+@{
+    ViewBag.Title = "Bewerbung";
+}
+
+<h2>Bewerbung</h2>
+@using (Html.BeginForm("BewerbungSpeichern", "Bewerbungen", FormMethod.Post))
+{
+<!-- Informationen Stellenangebot & Anbieter-->
+<div id="kontoMain" class="konto">
+
+    <div>
+        <div class="input">
+            @Html.LabelFor(model => model.stelle.stellenName)
+            <div id="stellenName">@Model.stelle.stellenName</div>
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(model => model.stelle.ort)
+            <div id="ort">@Model.stelle.ort</div>
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(model => model.stelle.monatsStunden)
+            <div id="monatsStunden">@Model.stelle.monatsStunden</div>
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(model => model.stelle.institut)
+            <div id="institut">@Model.stelle.institut</div>
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(model => model.anbieter.vorname)
+            <div id="anbieterVorName">@Model.anbieter.vorname</div>
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(model => model.anbieter.nachname)
+            <div id="anbieterNachName">@Model.anbieter.nachname</div>
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(model => model.anbieter.email)
+            <div id="anbieterEmail">@Model.anbieter.email</div>
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(model => model.stelle.anzahlOffeneStellen)
+            <div id="anzahlStellen">@Model.stelle.anzahlOffeneStellen</div>
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(model => model.stelle.bewerbungsFrist)
+            <div id="bewerbungsfrist">@Model.stelle.bewerbungsFrist.ToShortDateString()</div>
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(model => model.stelle.startAnstellung)
+            <div id="startAnstellung">@Model.stelle.startAnstellung.ToShortDateString()</div>
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(model => model.stelle.endeAnstellung)
+            <div id="endeAnstellung">@Model.stelle.endeAnstellung.ToShortDateString()</div>
+        </div>
+
+        <div class="input">
+            @Html.LabelFor(model => model.stelle.vorraussetzungen)
+            <div id="vorraussetzungen">@Model.stelle.vorraussetzungen</div>
+        </div>
+    </div>
+
+    <!-- vom Bewerber auszufuellen -->
+    @{  if (Roles.IsUserInRole("Bewerber"))
+        {
+            <div class="editor-label">
+                @Html.LabelFor(model => model.bewerbung.kenntnisse)
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.bewerbung.kenntnisse)
+                @Html.ValidationMessageFor(model => model.bewerbung.kenntnisse)
+                @Html.HiddenFor(model => model.bewerbung.kenntnisse)
+            </div>
+        }
+    }
+    <!-- Bewerber Details (nur für Anbieter sichtbar) -->
+    @{  if (Roles.IsUserInRole("Anbieter"))
+        {
+            <div>
+                <div class="input">
+                    @Html.LabelFor(model => model.bewerber.vorname)
+                    <div id="bewerberVorname">@Model.bewerber.vorname</div>
+                </div>
+
+                <div class="input">
+                    @Html.LabelFor(model => model.bewerber.nachname)
+                    <div id="bewerberNachname">@Model.bewerber.nachname</div>
+                </div>
+
+                <div class="input">
+                    @Html.LabelFor(model => model.bewerber.email)
+                    <div id="bewerberEmail">@Model.bewerber.email</div>
+                </div>
+
+                <div class="input">
+                    @Html.LabelFor(model => model.bewerber.studiengang)
+                    <div id="bewerberStudiengang">@Model.bewerber.studiengang</div>
+                </div>
+
+                <div class="input">
+                    @Html.LabelFor(model => model.bewerber.fachsemester)
+                    <div id="bewerberFachsemester">@Model.bewerber.fachsemester</div>
+                </div>
+
+                <div class="input">
+                    @Html.LabelFor(model => model.bewerbung.kenntnisse)
+                    <div id="bewerbungKenntnisse">@Model.bewerbung.kenntnisse</div>
+                </div>
+            </div>
+        }
+    }
+
+    <!-- Benachrichtigung -->
+    <div>
+        <div id="bemerkung">
+                @Html.TextAreaFor(model => model.bewerbung.bemerkung)
+                @Html.TextBox("bemerkungNeu")
+        </div>
+    </div>
+
+    <!-- Erforderliche Dokumente (nur für Bewerber sichtbar) -->
+    <div>
+        erstmal keine Dokumente
+    </div>
+
+    <!-- Hidden -->
+    
+        @Html.HiddenFor(model => model.stelle.id)
+        @Html.HiddenFor(model => model.bewerber.id)
+        @Html.HiddenFor(model => model.bewerbung.id)
+        @Html.HiddenFor(model => model.bewerbung.kenntnisse)
+        @Html.HiddenFor(model => model.bewerbung.status)
+        @Html.HiddenFor(model => model.bewerbung.benachrichtigung)
+        @Html.HiddenFor(model => model.bewerbung.bemerkung)
+        <input type="submit" value="abschicken" />
+
+        </div>
+    }
+    @{
+        if (Roles.IsUserInRole("Anbieter"))
+        {
+            using (Html.BeginForm("BewerbungAblehnen", "Bewerbungen", new { id = Model.bewerbung.id }))
+            {
+                @Html.HiddenFor(model => model.bewerbung.id)
+                <input type="submit" value="Bewerbung ablehnen" />
+            }
+
+            using (Html.BeginForm("BewerbungAnnehmen", "Bewerbungen", new { id = Model.bewerbung.id }))
+            {
+                @Html.HiddenFor(model => model.bewerbung.id)
+                <input type="submit" value="Bewerbung annehmen" />
+            }
+        }
+
+        if (Roles.IsUserInRole("Bewerber"))
+        {
+            using (Html.BeginForm("BewerbungLoeschen", "Bewerbungen", FormMethod.Post))
+            {
+                @Html.HiddenFor(model => model.bewerbung.id)
+                <input type="submit" value="Bewerbung zurückziehen" />
+            }
+        }
+    }
+    
+
+
+
+
+
+

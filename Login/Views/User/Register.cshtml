@@ -1,0 +1,39 @@
+﻿@model Login.Models.Benutzer
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "";
+}
+
+<script src="@Url.Content("~/Scripts/js/verarbeiteRegNav.js")" type="text/javascript"></script>
+
+
+<div id="register">
+
+<div class="register" id="auswahlRolle">
+    <p>Ich nutze das System um:</p>
+    @Html.RadioButtonFor(model => model.rechte, 0, new { selected = "selected" }) <span class="radioDescription">Bewerber</span>
+    @Html.RadioButtonFor(Model => Model.rechte, 1) <span class="radioDescription">Anbieter</span>
+    @Html.RadioButtonFor(Model => Model.rechte, 2) <span class="radioDescription">Bearbeiter</span>
+    <div class="button gruppe">
+        <input type="button" id="button1" value="weiter" />
+    </div>
+</div>
+        
+<div class="register" id="agb">
+    <h2>AGB</h2>
+    <div class="button gruppe">
+        <input type="button" id="agbZurueck" value="zur&uuml;ck" />
+        <input type="button" id="agbWeiter" value="weiter" />
+    </div>
+</div>
+    
+<!--
+---------------------- Bewerber Formular -------------------------------------------
+-->
+<div class="register" id="registerFormular">
+</div>
+    
+
+
+</div>
