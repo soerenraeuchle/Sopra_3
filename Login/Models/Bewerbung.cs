@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using DataAnnotationsExtensions;
 using System.ComponentModel.DataAnnotations;
-using Login.Models;
 
 namespace Login.Models
 {
@@ -34,59 +33,9 @@ namespace Login.Models
         public string kenntnisse { get; set; }
 
 
-        //Status beschreibt den Bearbeitungsgrad der Bewerbung (0 = unbearbeitet, 1 = bewerbung abgelehnt, 2 = bewerbung angenommen & zur bearbeitung freigegeben)
+        //Status beschreibt den Bearbeitungsgrad der Bewerbung
         [Integer]
         [Required]
         public int status { get; set; }
-
-        /**
-            Benachrichtigung zeigt Nachrichten für den Bewerber bzw. den Anbieter an (0 = keine Nachricht, 1 = Bewerbung eingetroffen, 2 = neue Nachricht für Bewerber,
-            3 = neue Nachricht für Anbieter)
-        **/
-        [Integer]
-        [Required]
-        public int benachrichtigung { get; set; }
-
-        //Konversation zwischen Anbieter und Bewerber
-        public string bemerkung { get; set; }
-    }
-
-    public class BewerbungAnsicht
-    {
-        public BewerbungAnsicht()
-        {
-            this.stelle = new Stellenangebot();
-            this.anbieter = new Anbieter();
-            this.bewerber = new Bewerber();
-            this.bewerbung = new Bewerbung();
-        }
-
-        //Stellenangebot zur Bewerbung
-        public Stellenangebot stelle { get; set;}
-
-        //Anbieter der Stelle
-        public Anbieter anbieter { get; set; }
-
-        //Bewerber der sich auf die Stelle beworben hat
-        public Bewerber bewerber { get; set; }
-
-        public Bewerbung bewerbung { get; set; }
-
-    }
-
-    public class BewerbungDetails : Bewerbung
-    {
-        public BewerbungDetails()
-        {
-            this.stelle = new Stellenangebot();
-        }
-
-        public Stellenangebot stelle { get; set; }
-    }
-
-    public class BewerbungBenutzer
-    {
-        public Bewerber bewerber { get; set; }
-        public Bewerbung bewerbung { get; set; }
     }
 }

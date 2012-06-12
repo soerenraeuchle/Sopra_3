@@ -50,38 +50,42 @@ namespace Login.Controllers
 
 
 
+
+        /// <summary>
+        /// Läd alle eigenen Stellenangebote in eine Liste und fügt sie der Partiellen View _StellenangeboteÜbersicht hinzu
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "Anbieter")]
+        public PartialViewResult _StellenAngebotSteuerung()
+        {
+            string email = HttpContext.User.Identity.Name;
+            Anbieter benutzer = DB.anbieterAuslesen(email);
+
+
+            StellenangebotUebersicht angebote = new StellenangebotUebersicht(DB.stellenangebotUebersichtLesen(benutzer.id));
+            return PartialView(angebote);
+
+        }
+
+        public PartialViewResult _StellenAngeboteÜbersicht()
+        {
+            StellenangebotUebersicht angebote = new StellenangebotUebersicht(DB.stellenangeboteUebersichtLesen());
+            return PartialView("_Stellenangebote",angebote);
+
+        }
+
         /// <summary>
         /// Läd ein ausgewähltes Stellenangebot mithilfe einer id, die View Variable gibt an ob ein Stellenangebot angezeigt wird oder bearbeitet wird
         /// </summary>
         /// <returns></returns>
 
         [HttpPost]
-        public ActionResult GetStelleAngebot(string id, string view)
+        public ActionResult GetStelleAngebot(Stellenangebot stelle, string view)
         {
-            Stellenangebot aktStelle = DB.stellenangebotLesen(Convert.ToInt32(id));
-            if (Request.IsAuthenticated)
-            {
-                if (Roles.GetRolesForUser(HttpContext.User.Identity.Name)[0].Equals("Anbieter"))
-                {
-                    Anbieter anbieter = DB.anbieterAuslesen(HttpContext.User.Identity.Name);
-                    Anbieter stellvertreter = DB.anbieterAuslesen(anbieter.stellvertreterID);
-                    ViewBag.Anbieter = false;
-                    ViewBag.Stellvertreter = false;
-                    if (stellvertreter.email == HttpContext.User.Identity.Name)
-                    {
-                        ViewBag.Stellvertreter = true;
-                    }
-                    if (anbieter.id == aktStelle.anbieterID)
-                    {
-                        ViewBag.Anbieter = true;
-                    }
-                }
-            }
+            Stellenangebot aktStelle = DB.stellenangebotLesen(stelle.id);
             ModelState.Clear();
             if (view == "anzeigen")
             {
-                
-               
                 ViewBag.Title = "Stellenangebot erstellen";
                 ViewBag.Methode = "NeueStelleSpeichern";
                 return View("StellenAngebot", aktStelle);
@@ -130,50 +134,6 @@ namespace Login.Controllers
         {
             DB.stellenangebotLoeschen(stelle);
             return RedirectToAction("Index", "User");
-        }
-
-        public PartialViewResult _Filter()
-        {
-            ViewData["Institute"] = new SelectList(DB.institutListeLesen());
-            ViewData["MonatsStunden"] = new SelectList(initMonatsStundenDropDown());
-
-            return PartialView("_Filter");
-
-        }
-
-
-        public ActionResult Filtern(Login.Models.Filter filter)
-        {
-            ViewBag.filter = filter;
-            if (filter.institut == null && filter.monatsStunden == null && filter.Name == null)
-            {
-                StellenangebotUebersicht angebote = new StellenangebotUebersicht(DB.stellenangeboteUebersichtLesen());
-
-                return PartialView("_Stellenangebote", angebote);
-            }
-            if (filter.institut == "Institute" && filter.monatsStunden == "Monats Stunden" && filter.Name == null)
-            {
-                StellenangebotUebersicht angebote = new StellenangebotUebersicht(DB.stellenangeboteUebersichtLesen());
-                return PartialView("_Stellenangebote", angebote);
-            }
-            else
-            {
-                StellenangebotUebersicht filterAngebote = new StellenangebotUebersicht(DB.stellenangeboteUebersichtFiltern(filter));
-                return PartialView("_Stellenangebote", filterAngebote);
-            }
-        }
-       
-
-        private LinkedList<string> initMonatsStundenDropDown()
-        {
-            LinkedList<string> monatsStunden = new LinkedList<string>();
-            monatsStunden.AddFirst("Monats Stunden");
-            monatsStunden.AddLast(" 0 - 10");
-            monatsStunden.AddLast("10 - 20");
-            monatsStunden.AddLast("20 - 30");
-            monatsStunden.AddLast("30 - 70");
-
-            return monatsStunden;
         }
     }
 }

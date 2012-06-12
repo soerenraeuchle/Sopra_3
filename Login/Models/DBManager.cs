@@ -86,6 +86,55 @@ namespace Login.Models
         //-------------------------------------------Benutzer Datenbank Methoden--------------------------------------------------
         //------------------------------------------------------------------------------------------------------------------------
 
+        public Admin adminAuslesen(String email)
+        {
+            Admin benutzer = new Admin();
+            string query = "SELECT vorname, nachname, rechte, passwort, id FROM Benutzer WHERE email=@email";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Prepare();
+                cmd.Parameters.AddWithValue("@email", email);
+
+                connect();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+
+                    reader.Read();
+
+                    //Anbieter auslesen
+                    benutzer.vorname = reader.GetString(0);
+                    benutzer.nachname = reader.GetString(1);
+                    benutzer.rechte = reader.GetInt32(2);
+                    benutzer.passwort = reader.GetString(3);
+                    benutzer.confirmPasswort = benutzer.passwort;
+                    benutzer.id = reader.GetInt32(4);
+                    benutzer.email = email;
+
+                    reader.Close();
+                    disconnect();
+                    return benutzer;
+                }
+                else
+                {
+                    reader.Close();
+                    disconnect();
+                    return benutzer;
+                }
+            }
+            catch (SqlException e)
+            {
+                lastError = e.StackTrace;
+                Console.WriteLine(e.StackTrace);
+                return null;
+            }
+        }
+
+       
+
         public Benutzer benutzerAuslesen(String email)
         {
             Benutzer benutzer = new Benutzer();
@@ -183,14 +232,14 @@ namespace Login.Models
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    reader.Close();
                     disconnect();
+                    reader.Close();
                     return true;
                 }
                 else
                 {
-                    reader.Close();
                     disconnect();
+                    reader.Close();
                     return false;
                 }
             }
@@ -338,51 +387,6 @@ namespace Login.Models
             }
         }
 
-        public Bewerber bewerberAuslesen(int id)
-        {
-            Bewerber benutzer = new Bewerber();
-            string query = "SELECT vorname, nachname, strasse, hausnummer, plz, wohnort, matrikelnummer, studiengang, fachsemester, passwort, email FROM Benutzer WHERE id=@id";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@id", id);
-
-                connect();
-                SqlDataReader reader = cmd.ExecuteReader();
-                reader.Read();
-
-                //Bewerber auslesen
-                benutzer.vorname = reader.GetString(0);
-                benutzer.nachname = reader.GetString(1);
-                benutzer.strasse = reader.GetString(2);
-                benutzer.hausnummer = reader.GetString(3);
-                benutzer.plz = reader.GetInt32(4);
-                benutzer.wohnort = reader.GetString(5);
-                benutzer.matrikelnummer = reader.GetInt32(6);
-                benutzer.studiengang = reader.GetString(7);
-                benutzer.fachsemester = reader.GetInt32(8);
-
-                benutzer.id = id;
-
-                benutzer.passwort = reader.GetString(9);
-                benutzer.confirmPasswort = benutzer.passwort;
-
-                benutzer.email = reader.GetString(10);
-
-                reader.Close();
-                disconnect();
-                return benutzer;
-            }
-            catch (SqlException e)
-            {
-                lastError = e.StackTrace;
-                Console.WriteLine(e.StackTrace);
-                return null;
-            }
-        }
-
 
         public bool bewerberAktualisieren(Bewerber benutzer)
         {
@@ -430,7 +434,11 @@ namespace Login.Models
 
 
         //---------------------------------------- Anbieter ------------------------------------------------------
-
+        /// <summary>
+        /// Speichert einen neuen Anbieter in der Datenbank.
+        /// </summary>
+        /// <param name="benutzer">Der neue Anbieter.</param>
+        /// <returns>Gibt true zurück, falls kein Fehler auftrat, andernfalls false.</returns>
         public bool anbieterSpeichern(Anbieter benutzer)
         {
             benutzer.passwort = FormsAuthentication.HashPasswordForStoringInConfigFile(benutzer.passwort, "SHA1");
@@ -495,7 +503,7 @@ namespace Login.Models
         public Anbieter anbieterAuslesen(String email)
         {
             Anbieter benutzer = new Anbieter();
-            string query = "SELECT vorname, nachname, institut, passwort, id FROM Benutzer WHERE email=@email";
+            string query = "SELECT vorname, nachname, institut, stellvertreterID, passwort, id FROM Benutzer WHERE email=@email";
 
             try
             {
@@ -505,64 +513,23 @@ namespace Login.Models
 
                 connect();
                 SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
                     reader.Read();
 
                     //Anbieter auslesen
                     benutzer.vorname = reader.GetString(0);
                     benutzer.nachname = reader.GetString(1);
                     benutzer.institut = reader.GetString(2);
+                    benutzer.stellvertreterID = reader.GetInt32(3);
 
-                    benutzer.passwort = reader.GetString(3);
+                    benutzer.passwort = reader.GetString(4);
                     benutzer.confirmPasswort = benutzer.passwort;
 
-                    benutzer.id = reader.GetInt32(4);
+                    benutzer.id = reader.GetInt32(5);
 
                     benutzer.email = email;
-                }
+
                     reader.Close();
                 
-                disconnect();
-                return benutzer;
-            }
-            catch (SqlException e)
-            {
-                lastError = e.StackTrace;
-                Console.WriteLine(e.StackTrace);
-                return null;
-            }
-        }
-
-        public Anbieter anbieterAuslesen(int id)
-        {
-            Anbieter benutzer = new Anbieter();
-            string query = "SELECT vorname, nachname, institut, passwort, email FROM Benutzer WHERE id=@id";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@id", id);
-
-                connect();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    reader.Read();
-
-                    //Anbieter auslesen
-                    benutzer.vorname = reader.GetString(0);
-                    benutzer.nachname = reader.GetString(1);
-                    benutzer.institut = reader.GetString(2);
-
-                    benutzer.passwort = reader.GetString(3);
-                    benutzer.confirmPasswort = benutzer.passwort;
-
-                    benutzer.email = reader.GetString(4);
-                }
-                reader.Close();
-
                 disconnect();
                 return benutzer;
             }
@@ -580,7 +547,8 @@ namespace Login.Models
             string query = "UPDATE Benutzer SET " +
                                 "vorname=@vorname, " +
                                 "nachname=@nachname, " +
-                                "institut=@institut " +
+                                "institut=@institut, " +
+                                "stellvertreterID=@stellvertreterID " +
                             "WHERE email=@email";
 
             try
@@ -591,6 +559,7 @@ namespace Login.Models
                 cmd.Parameters.AddWithValue("@nachname", benutzer.nachname);
 
                 cmd.Parameters.AddWithValue("@institut", benutzer.institut);
+                cmd.Parameters.AddWithValue("@stellvertreterID", benutzer.stellvertreterID);
 
                 cmd.Parameters.AddWithValue("@email", benutzer.email);
 
@@ -607,6 +576,380 @@ namespace Login.Models
             }
         }
 
+
+        //---------------------------------------- Bearbeiter ------------------------------------------------------
+
+        /// <summary>
+        /// Speichert einen neuen Anbieter in der Datenbank.
+        /// </summary>
+        /// <param name="benutzer">Der neue Anbieter.</param>
+        /// <returns>Gibt true zurück, falls kein Fehler auftrat, andernfalls false.</returns>
+        public bool bearbeiterSpeichern(Bearbeiter benutzer)
+        {
+            benutzer.passwort = FormsAuthentication.HashPasswordForStoringInConfigFile(benutzer.passwort, "SHA1");
+
+            string query = "INSERT INTO " +
+                                "Benutzer " +
+                                    "(" +
+                                        "vorname, " +
+                                        "nachname, " +
+
+                                        "email, " +
+                                        "passwort, " +
+
+                                        "rechte, " +
+                                        "freischaltung" +
+                                    ") " +
+                                "VALUES " +
+                                    "(" +
+                                        "@vorname, " +
+                                        "@nachname, " +
+
+                                        "@email, " +
+                                        "@passwort, " +
+
+                                        "@rechte, " +
+                                        "@freischaltung" +
+                                    ")";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Prepare();
+                cmd.Parameters.AddWithValue("@vorname", benutzer.vorname);
+                cmd.Parameters.AddWithValue("@nachname", benutzer.nachname);
+                cmd.Parameters.AddWithValue("@email", benutzer.email);
+                cmd.Parameters.AddWithValue("@passwort", benutzer.passwort);
+                cmd.Parameters.AddWithValue("@rechte", benutzer.rechte);
+                cmd.Parameters.AddWithValue("@freischaltung", benutzer.freischaltung);
+
+                connect();
+                cmd.ExecuteNonQuery();
+                disconnect();
+                return true;
+            }
+            catch (SqlException e)
+            {
+                lastError = e.StackTrace;
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+        }
+
+        public Bearbeiter bearbeiterAuslesen(String email)
+        {
+            Bearbeiter benutzer = new Bearbeiter();
+            string query = "SELECT vorname, nachname, passwort, id FROM Benutzer WHERE email=@email";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Prepare();
+                cmd.Parameters.AddWithValue("@email", email);
+
+                connect();
+                SqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+
+                benutzer.vorname = reader.GetString(0);
+                benutzer.nachname = reader.GetString(1);
+
+                benutzer.passwort = reader.GetString(2);
+                benutzer.confirmPasswort = benutzer.passwort;
+
+                benutzer.id = reader.GetInt32(3);
+
+                benutzer.email = email;
+
+                reader.Close();
+
+                disconnect();
+                return benutzer;
+            }
+            catch (SqlException e)
+            {
+                lastError = e.StackTrace;
+                Console.WriteLine(e.StackTrace);
+                return null;
+            }
+        }
+       
+
+
+        public bool bearbeiterAktualisieren(Bearbeiter benutzer)
+        {
+            string query = "UPDATE Benutzer SET " +
+                                "vorname=@vorname, " +
+                                "nachname=@nachname " +
+                            "WHERE email=@email";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Prepare();
+                cmd.Parameters.AddWithValue("@vorname", benutzer.vorname);
+                cmd.Parameters.AddWithValue("@nachname", benutzer.nachname);
+
+                cmd.Parameters.AddWithValue("@email", benutzer.email);
+
+                connect();
+                cmd.ExecuteNonQuery();
+                disconnect();
+                return true;
+            }
+            catch (SqlException e)
+            {
+                lastError = e.StackTrace;
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+        }
+
+
+        //--------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------------- ADMIN ----------------------------------------------------------------
+        //--------------------------------------------------------------------------------------------------------------------
+
+        public bool adminAnlegen(Admin benutzer)
+        {
+            benutzer.passwort = FormsAuthentication.HashPasswordForStoringInConfigFile(benutzer.passwort, "SHA1");
+
+            string query = "INSERT INTO " +
+                                "Benutzer " +
+                                    "(" +
+                                        "vorname, " +
+                                        "nachname, " +
+                                    
+                                        "email, " +
+                                        "passwort, " +
+
+                                        "rechte, " +
+                                        "freischaltung" +
+                                    ") " +
+                                "VALUES " +
+                                    "(" +
+                                        "@vorname, " +
+                                        "@nachname, " +
+
+                                        "@email, " +
+                                        "@passwort, " +
+
+                                        "@rechte, " +
+                                        "@freischaltung " +
+                                    ")";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@vorname", benutzer.vorname);
+                cmd.Parameters.AddWithValue("@nachname", benutzer.nachname);
+
+                cmd.Parameters.AddWithValue("@email", benutzer.email);
+                cmd.Parameters.AddWithValue("@passwort", benutzer.passwort);
+                cmd.Parameters.AddWithValue("@rechte", benutzer.rechte);
+                cmd.Parameters.AddWithValue("@freischaltung", benutzer.freischaltung);
+
+                connect();
+                cmd.ExecuteNonQuery();
+                disconnect();
+                return true;
+            }
+            catch (SqlException e)
+            {
+                lastError = e.StackTrace;
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+        }
+
+        public bool benutzerLoeschen(int benutzerID)
+        {
+            string query = "DELETE FROM benutzer WHERE id=@id";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@id", benutzerID);
+
+                connect();
+                cmd.ExecuteNonQuery();
+                disconnect();
+                return true;
+            }
+            catch (SqlException e)
+            {
+                lastError = e.StackTrace;
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+        }
+
+
+        public bool benutzerFreischalten(int benutzerID)
+        {
+            string query = "UPDATE benutzer SET freischaltung='True' WHERE id=@id";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@id", benutzerID);
+
+                connect();
+                cmd.ExecuteNonQuery();
+                disconnect();
+                return true;
+            }
+            catch (SqlException e)
+            {
+                lastError = e.StackTrace;
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+        }
+
+
+        public bool benutzerSperren(int benutzerID)
+        {
+            string query = "UPDATE benutzer SET freischaltung='False' WHERE id=@id";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Prepare();
+
+                cmd.Parameters.AddWithValue("@id", benutzerID);
+
+                connect();
+                cmd.ExecuteNonQuery();
+                disconnect();
+                return true;
+            }
+            catch (SqlException e)
+            {
+                lastError = e.StackTrace;
+                Console.WriteLine(e.StackTrace);
+                return false;
+            }
+        }
+
+
+        public LinkedList<Benutzer> benutzerAuslesen()
+        {
+            LinkedList<Benutzer> benutzerList = new LinkedList<Benutzer>();
+
+            string query = "SELECT id, vorname, nachname, email, studiengang, fachsemester, strasse, hausnummer, plz, wohnort, passwort, rechte, freischaltung, matrikelnummer, institut, stellvertreterID " +
+                            "FROM Benutzer ORDER BY nachname ASC, vorname ASC";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Prepare();
+
+                connect();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        int rechte = reader.GetInt32(11);
+
+                        //Benutzer je nach Rolle einteilen.
+                        if (rechte == 1)
+                        {
+                            //Anbieter
+                            Anbieter benutzer = new Anbieter();
+
+                            benutzer.id = reader.GetInt32(0);
+                            benutzer.vorname = reader.GetString(1);
+                            benutzer.nachname = reader.GetString(2);
+                            benutzer.email = reader.GetString(3);
+                            benutzer.passwort = reader.GetString(10);
+                            benutzer.confirmPasswort = benutzer.passwort;
+                            benutzer.rechte = rechte;
+                            benutzer.freischaltung = reader.GetBoolean(12);
+
+                            benutzer.institut = reader.GetString(14);
+                            benutzer.stellvertreterID = reader.GetInt32(15);
+
+                            benutzerList.AddLast(benutzer);
+                        }
+                        else if (rechte == 2)
+                        {
+                            //Bearbeiter
+                            Bearbeiter benutzer = new Bearbeiter();
+
+                            benutzer.id = reader.GetInt32(0);
+                            benutzer.vorname = reader.GetString(1);
+                            benutzer.nachname = reader.GetString(2);
+                            benutzer.email = reader.GetString(3);
+                            benutzer.passwort = reader.GetString(10);
+                            benutzer.confirmPasswort = benutzer.passwort;
+                            benutzer.rechte = rechte;
+                            benutzer.freischaltung = reader.GetBoolean(12);
+
+                            benutzerList.AddLast(benutzer);
+                        }
+                        else if (rechte == 3)
+                        {
+                            //Admin
+                            Admin benutzer = new Admin();
+
+                            benutzer.id = reader.GetInt32(0);
+                            benutzer.vorname = reader.GetString(1);
+                            benutzer.nachname = reader.GetString(2);
+                            benutzer.email = reader.GetString(3);
+                            benutzer.passwort = reader.GetString(10);
+                            benutzer.confirmPasswort = benutzer.passwort;
+                            benutzer.rechte = rechte;
+                            benutzer.freischaltung = reader.GetBoolean(12);
+
+                            benutzerList.AddLast(benutzer);
+                        }
+                        else
+                        {
+                            //Bewerber
+                            Bewerber benutzer = new Bewerber();
+
+                            benutzer.id = reader.GetInt32(0);
+                            benutzer.vorname = reader.GetString(1);
+                            benutzer.nachname = reader.GetString(2);
+                            benutzer.email = reader.GetString(3);
+                            benutzer.passwort = reader.GetString(10);
+                            benutzer.confirmPasswort = benutzer.passwort;
+                            benutzer.rechte = rechte;
+                            benutzer.freischaltung = reader.GetBoolean(12);
+
+                            benutzer.strasse = reader.GetString(6);
+                            benutzer.hausnummer = reader.GetString(7);
+                            benutzer.plz = reader.GetInt32(8);
+                            benutzer.wohnort = reader.GetString(9);
+
+                            benutzer.matrikelnummer = reader.GetInt32(13);
+                            benutzer.fachsemester = reader.GetInt32(5);
+                            benutzer.studiengang = reader.GetString(4);
+
+                            benutzerList.AddLast(benutzer);
+                        }
+
+                    }
+
+                }
+
+                reader.Close();
+                disconnect();
+                return benutzerList;
+            }
+            catch (SqlException e)
+            {
+                return null;
+            }
+        }
 
 
         //--------------------------------------------------------------------------------------------------------------------
@@ -720,7 +1063,7 @@ namespace Login.Models
             }
         }
 
-        public bool stellenangebotLoeschen(Stellenangebot stelle){
+        public bool stellenangebotLoeschen(Stellenangebot stelle) {
             string query = "DELETE FROM Stellenangebote " +
                             "WHERE id = @id";
             try
@@ -782,58 +1125,6 @@ namespace Login.Models
                 reader.Close();
                 disconnect();
                 return stelle;
-            }
-            catch (SqlException e)
-            {
-                return null;
-            }
-        }
-
-        public LinkedList<StellenangebotAnsicht> stellenangeboteUebersichtLesen(int anbieterID)
-        {
-            LinkedList<StellenangebotAnsicht> liste = new LinkedList<StellenangebotAnsicht>();
-
-            string query = "SELECT stellenName, " +
-                "beschreibung, institut, anbieterID, " +
-                "startAnstellung, endeAnstellung, " +
-                "bewerbungsFrist, monatsStunden, " +
-            "anzahlOffeneStellen, ort, vorraussetzungen, id " +
-            "FROM Stellenangebote WHERE anbieterID= @anbieterID";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@anbieterID", anbieterID);
-
-                connect();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        StellenangebotAnsicht stelle = new StellenangebotAnsicht();
-                        stelle.stellenName = reader.GetString(0);
-                        stelle.beschreibung = reader.GetString(1);
-                        stelle.institut = reader.GetString(2);
-                        stelle.anbieterID = anbieterID;
-                        stelle.startAnstellung =reader.GetDateTime(4);
-                        stelle.endeAnstellung = reader.GetDateTime(5);
-                        stelle.bewerbungsFrist = reader.GetDateTime(6);
-                        stelle.monatsStunden = reader.GetInt32(7);
-                        stelle.anzahlOffeneStellen = reader.GetInt32(8);
-                        stelle.ort = reader.GetValue(9).ToString();
-                        stelle.vorraussetzungen = reader.GetString(10);
-                        stelle.id = reader.GetInt32(11);
-
-                        liste.AddLast(stelle);
-                    }
-
-                }
-
-                reader.Close();
-                disconnect();
-                return liste;
             }
             catch (SqlException e)
             {
@@ -941,509 +1232,6 @@ namespace Login.Models
             catch (SqlException e)
             {
                 return null;
-            }
-        }
-
-        public LinkedList<string> institutListeLesen()
-        {
-            LinkedList<string> liste = new LinkedList<string>();
-
-            string query = "SELECT DISTINCT institut " +
-            "FROM Stellenangebote ";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-
-                connect();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    liste.AddFirst("Institute");
-                    while (reader.Read())
-                    {
-                        string institut = reader.GetString(0);
-                        liste.AddLast(institut);
-                    }
-                }
-
-                reader.Close();
-                disconnect();
-                return liste;
-            }
-            catch (SqlException e)
-            {
-                return null;
-            }
-        }
-
-        public LinkedList<Stellenangebot> stellenangeboteUebersichtFiltern(Filter filter)
-        {
-            LinkedList<Stellenangebot> liste = new LinkedList<Stellenangebot>();
-            bool institut = false;
-            bool monatsStunden = false;
-            bool name = false;
-            int anzWorte = 0;
-
-
-            string query = "SELECT stellenName, " +
-                "beschreibung, institut, anbieterID, " +
-                "startAnstellung, endeAnstellung, " +
-                "bewerbungsFrist, monatsStunden, " +
-            "anzahlOffeneStellen, ort, vorraussetzungen, id " +
-            "FROM Stellenangebote WHERE ";
-
-            if (filter.institut != "Institute")
-            {
-                query += "institut = @institut ";
-                institut = true;
-            }
-            if (filter.monatsStunden != "Monats Stunden")
-            {
-                monatsStunden = true;
-                if (institut)
-                {
-                    query += "AND ";
-                }
-
-                query += "monatsStunden Between @start AND @ende ";
-            }
-            if (filter.Name != null)
-            {
-                name = true;
-                if(institut || monatsStunden)
-                {
-                    query += " AND ";
-                }
-                string[] temp = filter.Name.Split(' ');
-                anzWorte = temp.Length;
-                query += " (LOWER(stellenName) LIKE @name) ";
-                for(int i = 1; i < anzWorte ; i++)
-                {
-                    string prepare = "@name" + i + "";
-                    query += "OR (LOWER(stellenName) LIKE " + prepare + ") ";
-                }
-                 
-            }
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                if (institut)
-                {
-                    cmd.Parameters.AddWithValue("@institut", filter.institut);
-                }
-                if (monatsStunden)
-                {
-                    string temp = filter.monatsStunden.Trim();
-                    string[] split = temp.Split('-');
-                    int start = Convert.ToInt32(split[0]);
-                    int ende = Convert.ToInt32(split[1]);
-
-                    cmd.Parameters.AddWithValue("@start", start);
-                    cmd.Parameters.AddWithValue("@ende", ende);
-
-                }
-                if (name)
-                {
-                    string[] temp = filter.Name.Split(' ');
-                    string test = temp[0].ToLower();
-                    cmd.Parameters.AddWithValue("@name", "%"+temp[0].ToLower()+"%");
-                    for(int i = 1; i < anzWorte ; i++)
-                    {
-                        string prepare = "@name" + i + "";
-                        cmd.Parameters.AddWithValue(prepare , "%"+temp[i].ToLower()+"%");
-                    }
-                }
-
-                connect();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        Stellenangebot stelle = new Stellenangebot();
-                        stelle.stellenName = reader.GetString(0);
-                        stelle.beschreibung = reader.GetString(1);
-                        stelle.institut = reader.GetString(2);
-                        stelle.anbieterID = reader.GetInt32(3);
-                        stelle.startAnstellung = reader.GetDateTime(4);
-                        stelle.endeAnstellung = reader.GetDateTime(5);
-                        stelle.bewerbungsFrist = reader.GetDateTime(6);
-                        stelle.monatsStunden = reader.GetInt32(7);
-                        stelle.anzahlOffeneStellen = reader.GetInt32(8);
-                        stelle.ort = reader.GetValue(9).ToString();
-                        stelle.vorraussetzungen = reader.GetString(10);
-                        stelle.id = reader.GetInt32(11);
-
-                        liste.AddLast(stelle);
-                    }
-
-                }
-
-                reader.Close();
-                disconnect();
-                return liste;
-            }
-            catch (SqlException e)
-            {
-                return null;
-            }
-        }
-
-        //--------------------------------------------------------------------------------------------------------------------
-        //-------------------------------------BEWERBUNGEN PREPARED STATEMENTS--------------------------------------------
-        //--------------------------------------------------------------------------------------------------------------------
-        public bool bewerbungAktualisieren(Models.Bewerbung bewerbung)
-        {
-
-            string query = "UPDATE Bewerbungen SET " +
-                                    "kenntnisse= @kenntnisse, " +
-                                    "status = @status, " +
-                                    "benachrichtigung = @benachrichtigung, " +
-                                    "bemerkung = @bemerkung " + 
-                                    "WHERE id = @id";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@kenntnisse", bewerbung.kenntnisse);
-                cmd.Parameters.AddWithValue("@status", bewerbung.status);
-                cmd.Parameters.AddWithValue("@benachrichtigung", bewerbung.benachrichtigung);
-                cmd.Parameters.AddWithValue("@bemerkung", bewerbung.bemerkung);
-                cmd.Parameters.AddWithValue("@id", bewerbung.id);
-
-
-                connect();
-                cmd.ExecuteNonQuery();
-                disconnect();
-                return true;
-
-            }
-            catch (SqlException e)
-            {
-                Console.WriteLine(e.StackTrace);
-                return false;
-            }
-        }
-
-        public bool bewerbungHinzufügen(Bewerbung bewerbung)
-        {
-            string query = "INSERT INTO Bewerbungen" +
-                                    "(" +
-                                        "stellenangebotID, " +
-                                        "benutzerID, " +
-                                        "kenntnisse, " +
-                                        "status, " +
-                                        "benachrichtigung)" +
-                                "VALUES " +
-                                    "(" +
-                                        "@stellenangebotID, " +
-                                        "@benutzerID, " +
-                                        "@kenntnisse, " +
-                                        "@status, " +
-                                        "@benachrichtigung" 
-                                        + ") ";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@stellenangebotID", bewerbung.stellenangebotID);
-                cmd.Parameters.AddWithValue("@benutzerID", bewerbung.benutzerID);
-                cmd.Parameters.AddWithValue("@kenntnisse", bewerbung.kenntnisse);
-                cmd.Parameters.AddWithValue("@status", bewerbung.status);
-                cmd.Parameters.AddWithValue("@benachrichtigung", bewerbung.benachrichtigung);
-
-                connect();
-                cmd.ExecuteNonQuery();
-                disconnect();
-                return true;
-
-            }
-            catch (SqlException e)
-            {
-                Console.WriteLine(e.StackTrace);
-                return false;
-            }
-        }
-
-        public bool bewerbungLoeschen(int id)
-        {
-            string query = "DELETE FROM Bewerbungen " +
-                            "WHERE id = @id";
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@id", id);
-
-                connect();
-                cmd.ExecuteNonQuery();
-                disconnect();
-                return true;
-            }
-            catch (SqlException e)
-            {
-                Console.WriteLine(e.StackTrace);
-                return false;
-            }
-        }
-
-        public Bewerbung bewerbungLesenVonBenutzer(int benutzerID)
-        {
-            Bewerbung bewerbung = new Bewerbung();
-
-            string query = "SELECT id, " +
-                "stellenangebotID, kenntnisse, " +
-                "status, benachrichtigung, bemerkung " +
-                "FROM Bewerbungen WHERE benutzerID= @benutzerID";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@benutzerID", benutzerID);
-
-                connect();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    bewerbung.id = reader.GetInt32(0);
-                    bewerbung.stellenangebotID = reader.GetInt32(1);
-                    bewerbung.kenntnisse = reader.GetString(2);
-                    bewerbung.status = reader.GetInt32(3);
-                    bewerbung.benachrichtigung = reader.GetInt32(4);
-                    bewerbung.bemerkung = reader.GetString(5);
-
-                    bewerbung.benutzerID = benutzerID;
-
-                }
-
-                reader.Close();
-                disconnect();
-                return bewerbung;
-            }
-            catch (SqlException e)
-            {
-                return null;
-            }
-        }
-
-        public Bewerbung bewerbungLesen(int ID)
-        {
-            Bewerbung bewerbung = new Bewerbung();
-
-            string query = "SELECT " +
-                "stellenangebotID, benutzerID, kenntnisse, " +
-                "status, benachrichtigung, bemerkung " +
-                "FROM Bewerbungen WHERE ID= @ID";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@ID", ID);
-
-                connect();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    bewerbung.id = ID;
-                    bewerbung.stellenangebotID = reader.GetInt32(0);
-                    bewerbung.benutzerID = reader.GetInt32(1);
-                    bewerbung.kenntnisse = reader.GetString(2);
-                    bewerbung.status = reader.GetInt32(3);
-                    bewerbung.benachrichtigung = reader.GetInt32(4);
-                    if (reader.GetValue(5).Equals(DBNull.Value))
-                        bewerbung.bemerkung = "";
-                    else
-                        bewerbung.bemerkung = reader.GetString(5);
-                }
-
-                reader.Close();
-                disconnect();
-                return bewerbung;
-            }
-            catch (SqlException e)
-            {
-                return null;
-            }
-        }
-        public LinkedList<Bewerbung> bewerbungenLesenVonAnbieter(int stellenangebotID)
-        {
-            LinkedList<Bewerbung> bewerbungen = new LinkedList<Bewerbung>();
-
-            string query = "SELECT id, " +
-                "benutzerID, kenntnisse, " +
-                "status, benachrichtigung, bemerkung " +
-                "FROM Bewerbungen WHERE stellenangebotID= @stellenangebotID";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@stellenangebotID", stellenangebotID);
-
-                connect();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    Bewerbung bewerbung = new Bewerbung();
-                    bewerbung.id = reader.GetInt32(0);
-                    bewerbung.benutzerID = reader.GetInt32(1);
-                    bewerbung.kenntnisse = reader.GetString(2);
-                    bewerbung.status = reader.GetInt32(3);
-                    bewerbung.benachrichtigung = reader.GetInt32(4);
-                    if (reader.GetValue(5).Equals(DBNull.Value))
-                        bewerbung.bemerkung = "";
-                    else
-                        bewerbung.bemerkung = reader.GetString(5);
-
-                    bewerbung.stellenangebotID = stellenangebotID;
-
-                    bewerbungen.AddLast(bewerbung);
-
-                }
-
-                reader.Close();
-                disconnect();
-                return bewerbungen;
-            }
-            catch (SqlException e)
-            {
-                return null;
-            }
-        }
-
-        public Bewerbung bewerbungLesen(int benutzerID, int stellenangebotID)
-        {
-            Bewerbung bewerbung = new Bewerbung();
-
-            string query = "SELECT id, " +
-                "benutzerID, kenntnisse, " +
-                "status, benachrichtigung, bemerkung " +
-                "FROM Bewerbungen WHERE stellenangebotID= @stellenangebotID AND benutzerID= @benutzerID";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@stellenangebotID", stellenangebotID);
-                cmd.Parameters.AddWithValue("@benutzerID", benutzerID);
-
-                connect();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    bewerbung.id = reader.GetInt32(0);
-                    bewerbung.benutzerID = reader.GetInt32(1);
-                    bewerbung.kenntnisse = reader.GetString(2);
-                    bewerbung.status = reader.GetInt32(3);
-                    bewerbung.benachrichtigung = reader.GetInt32(4);
-                    if (reader.GetValue(5).Equals(DBNull.Value))
-                        bewerbung.bemerkung = "";
-                    else
-                        bewerbung.bemerkung = reader.GetString(5);
-
-                    bewerbung.stellenangebotID = stellenangebotID;
-
-                }
-
-                reader.Close();
-                disconnect();
-                return bewerbung;
-            }
-            catch (SqlException e)
-            {
-                return null;
-            }
-        }
-
-        public LinkedList<Bewerbung> bewerbungenUebersichtLesen(int benutzerID)
-        {
-            LinkedList<Bewerbung> liste = new LinkedList<Bewerbung>();
-
-            string query = "SELECT id, " +
-                "stellenangebotID, kenntnisse, status, " +
-                "benachrichtigung, bemerkung " +
-                "FROM Bewerbungen WHERE benutzerID= @benutzerID";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@benutzerID", benutzerID);
-
-                connect();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        Bewerbung bewerbung = new Bewerbung();
-                        bewerbung.id = reader.GetInt32(0);
-                        bewerbung.stellenangebotID = reader.GetInt32(1);
-                        bewerbung.kenntnisse = reader.GetString(2);
-                        bewerbung.status = reader.GetInt32(3);
-                        bewerbung.benachrichtigung = reader.GetInt32(4);
-                        if (reader.GetValue(5).Equals(DBNull.Value))
-                            bewerbung.bemerkung = "";
-                        else
-                            bewerbung.bemerkung = reader.GetString(5);
-
-                        bewerbung.benutzerID = benutzerID;
-
-                        liste.AddLast(bewerbung);
-                    }
-
-                }
-
-                reader.Close();
-                disconnect();
-                return liste;
-            }
-            catch (SqlException e)
-            {
-                return null;
-            }
-        }
-
-        public bool bewerbungVorhanden(int benutzerID, int stellenID)
-        {
-            bool exist = false;
-
-            string query = "SELECT id, " +
-                "stellenangebotID, benutzerID, kenntnisse, " +
-                "status, benachrichtigung" +
-                " FROM Bewerbungen WHERE benutzerID= @benutzerID and stellenangebotID= @stellenangebotID";
-
-            try
-            {
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Prepare();
-                cmd.Parameters.AddWithValue("@benutzerID", benutzerID);
-                cmd.Parameters.AddWithValue("@stellenangebotID", stellenID);
-
-                connect();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    exist = true;
-                }
-
-                reader.Close();
-                disconnect();
-                return exist;
-            }
-            catch (SqlException e)
-            {
-                return false;
             }
         }
     }
