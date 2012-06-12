@@ -112,31 +112,12 @@ namespace Login.Models
                 var model = (Stellenangebot)value;
                 return model.bewerbungsFrist < model.startAnstellung;
             }
-        }   
-    }
-
-    public class StellenangebotAnsicht : Stellenangebot
-    {
-        public LinkedList<BewerbungBenutzer> bewerbungen { get; set; }
-
-        public StellenangebotAnsicht(LinkedList<BewerbungBenutzer> _bewerbungen)
-        {
-            this.bewerbungen = _bewerbungen;
         }
 
-        public StellenangebotAnsicht()
-        {
-            this.bewerbungen = null;
-        }
-    }
 
-    public class StellenangeboteBewerbungUebersicht
-    {
-        public LinkedList<StellenangebotAnsicht> stellenBewerbung { get; set; }
 
-        public StellenangeboteBewerbungUebersicht(LinkedList<StellenangebotAnsicht> liste)
-        {
-            this.stellenBewerbung = liste;
-        }
+        
+
+        
     }
 }

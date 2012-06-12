@@ -1,4 +1,4 @@
-@model Login.Models.Anbieter
+﻿@model Login.Models.Bearbeiter
 
 @{
     ViewBag.Title = "Konto";
@@ -20,15 +20,6 @@
             <div id="nachname">@Model.nachname</div>
 
         </div>
-    </div>
-
-    <div id="uni" class="gruppe">
-        <h3>Identifikation</h3>
-        <div class="input">
-            @Html.LabelFor(model => model.institut)
-            <div id="matrikelnummer">@Model.institut</div>
-        </div>
-        
     </div>
 
     

@@ -1,4 +1,4 @@
-@model Login.Models.Anbieter
+﻿@model Login.Models.Bearbeiter
 
 @{
     ViewBag.Title = "KontoBearbeiten";
@@ -25,19 +25,6 @@
             @Html.EditorFor(model => model.nachname)
             @Html.ValidationMessageFor(model => model.nachname)
         </div>
-    </div>
-
-    
-
-    <div id="uni" class="gruppe">
-        <h3>Identifikation</h3>
-        <div class="input">
-            @Html.LabelFor(model => model.institut)
-            @Html.EditorFor(model => model.institut)
-            @Html.ValidationMessageFor(model => model.institut)
-        </div>
-
-        
     </div>
 
     <input type="submit" id="editKonto" value="speichern" />
