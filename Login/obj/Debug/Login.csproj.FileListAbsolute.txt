@@ -18,13 +18,23 @@ D:\SoPra\Login\bin\EntityFramework.xml
 D:\SoPra\Login\obj\Debug\ResolveAssemblyReference.cache
 D:\SoPra\Login\obj\Debug\Login.dll
 D:\SoPra\Login\obj\Debug\Login.pdb
-C:\dev\asp\SoPraRep\Login\bin\Login.dll
-C:\dev\asp\SoPraRep\Login\bin\Login.pdb
-C:\dev\asp\SoPraRep\Login\bin\DataAnnotationsExtensions.ClientValidation.dll
-C:\dev\asp\SoPraRep\Login\bin\DataAnnotationsExtensions.dll
-C:\dev\asp\SoPraRep\Login\bin\EntityFramework.dll
-C:\dev\asp\SoPraRep\Login\bin\WebActivator.dll
-C:\dev\asp\SoPraRep\Login\bin\EntityFramework.xml
-C:\dev\asp\SoPraRep\Login\obj\Debug\ResolveAssemblyReference.cache
-C:\dev\asp\SoPraRep\Login\obj\Debug\Login.dll
-C:\dev\asp\SoPraRep\Login\obj\Debug\Login.pdb
+D:\Sopra_3\Login\bin\Login.dll
+D:\Sopra_3\Login\bin\Login.pdb
+D:\Sopra_3\Login\bin\DataAnnotationsExtensions.ClientValidation.dll
+D:\Sopra_3\Login\bin\DataAnnotationsExtensions.dll
+D:\Sopra_3\Login\bin\EntityFramework.dll
+D:\Sopra_3\Login\bin\WebActivator.dll
+D:\Sopra_3\Login\bin\EntityFramework.xml
+D:\Sopra_3\Login\obj\Debug\ResolveAssemblyReference.cache
+D:\Sopra_3\Login\obj\Debug\Login.dll
+D:\Sopra_3\Login\obj\Debug\Login.pdb
+D:\Studium\Backup Sopra\Login\bin\Login.dll
+D:\Studium\Backup Sopra\Login\bin\Login.pdb
+D:\Studium\Backup Sopra\Login\bin\DataAnnotationsExtensions.ClientValidation.dll
+D:\Studium\Backup Sopra\Login\bin\DataAnnotationsExtensions.dll
+D:\Studium\Backup Sopra\Login\bin\EntityFramework.dll
+D:\Studium\Backup Sopra\Login\bin\WebActivator.dll
+D:\Studium\Backup Sopra\Login\bin\EntityFramework.xml
+D:\Studium\Backup Sopra\Login\obj\Debug\ResolveAssemblyReference.cache
+D:\Studium\Backup Sopra\Login\obj\Debug\Login.dll
+D:\Studium\Backup Sopra\Login\obj\Debug\Login.pdb
