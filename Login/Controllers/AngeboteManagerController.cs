@@ -141,16 +141,14 @@ namespace Login.Controllers
 
         }
 
-        /// <summary>
-        /// Übergibt der Stellenangebote Übersicht alle Stellenangebote
-        /// </summary>
-        /// <returns></returns>
-        public PartialViewResult _StellenAngeboteÜbersicht(Login.Models.Filter filter)
+
+        public ActionResult Filtern(Login.Models.Filter filter)
         {
+            ViewBag.filter = filter;
             if (filter.institut == null && filter.monatsStunden == null && filter.Name == null)
             {
                 StellenangebotUebersicht angebote = new StellenangebotUebersicht(DB.stellenangeboteUebersichtLesen());
- 
+
                 return PartialView("_Stellenangebote", angebote);
             }
             if (filter.institut == "Institute" && filter.monatsStunden == "Monats Stunden" && filter.Name == null)
@@ -163,8 +161,8 @@ namespace Login.Controllers
                 StellenangebotUebersicht filterAngebote = new StellenangebotUebersicht(DB.stellenangeboteUebersichtFiltern(filter));
                 return PartialView("_Stellenangebote", filterAngebote);
             }
-            
         }
+       
 
         private LinkedList<string> initMonatsStundenDropDown()
         {

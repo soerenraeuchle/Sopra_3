@@ -24,8 +24,10 @@ namespace Login.Controllers
         /// <returns>Index.cshtml</returns>
         public ActionResult Index()
         {
-            return View();
+            StellenangebotUebersicht angebote = new StellenangebotUebersicht(DB.stellenangeboteUebersichtLesen());
+            return View(angebote);
         }
+
 
 
         /// <summary>

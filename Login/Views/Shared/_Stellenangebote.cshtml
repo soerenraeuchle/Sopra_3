@@ -2,27 +2,32 @@
 
 @{
     ViewBag.Title = "Stellenangebote";
-    ViewBag.returnUrl = "~/";
+
 }
+@Html.Action("_Filter", "AngeboteManager")
 
 
+  
 @{
-     <h3></h3>
-        
-    
-    
-    WebGrid grid = new WebGrid((IEnumerable<Login.Models.Stellenangebot>)Model.angebote,
-        defaultSort: "stellenName",
-         rowsPerPage: 5,
+    var grid = new WebGrid(
+         defaultSort: "stellenName",
+         ajaxUpdateContainerId: "grid",
+         ajaxUpdateCallback: "updateGrid",
          canPage: false,
-         canSort: true,
-         fieldNamePrefix: "grid_",
-         pageFieldName: "inside",
-         selectionFieldName: "selectedRow");
-}   
-        
+         canSort: false);
+    grid.Bind((IEnumerable<Login.Models.Stellenangebot>)Model.angebote, autoSortAndPage: true);
+      
+     
+}  
 
-    <div id="grid">
+
+  <div id="grid">
+
+      
+
+    @{ if (Model.angebote.Count != 0)
+       {
+         
     @grid.GetHtml(
         tableStyle: "webgrid",
         headerStyle: "webgrid-header",
@@ -31,14 +36,14 @@
         selectedRowStyle: "webgrid-selected-row",
         rowStyle: "webgrid-row-style",
 
-       
-        
+
+
     columns: grid.Columns(
-       
+
         grid.Column(
             columnName: "id",
             style: "idColumn"),
-                     
+
         grid.Column(
              columnName: "stellenName",
              header: "Name",
@@ -64,17 +69,26 @@
 
         </form>
 
+       }
+       else
+       {
+            @:Ihre Suche ergab Keine Treffer.
+       }
+       }
 
-</div>
-    
-
+       </div>
 
 <script type="text/javascript">
-    var headerCells = $("#grid tr:eq(0) th");
-    var firstRowCells = $("#grid tr:eq(1) td");
-    $(headerCells[0]).addClass($(firstRowCells[0]).attr("class"));
+    function updateGrid() {
+        var headerCells = $("#grid tr:eq(0) th");
+        var firstRowCells = $("#grid tr:eq(1) td");
+        $(headerCells[0]).addClass($(firstRowCells[0]).attr("class"));
 
-    $(function () {
+
+    }
+    updateGrid();
+        $(function () {
+
         $('tbody tr').live('hover', function () {
             $(this).toggleClass('clickable');
         }).live('click', function () {
@@ -86,7 +100,21 @@
 
         });
     });
+/*
+    $(document).ready(function () {
+
+        function updateGrid(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            var grid = $(this).parents('.ajaxGrid');
+            var id = grid.attr('id');
+            grid.load(url + ' #' + id);
+        };
+        $('.ajaxGrid table thead tr a').live('click', updateGrid);
+        $('.ajaxGrid table tfoot tr a').live('click', updateGrid);
+    });
+    */
 </script>    
 
-   
+  
 

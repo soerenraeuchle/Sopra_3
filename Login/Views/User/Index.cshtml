@@ -1,10 +1,12 @@
-﻿@{
+﻿@model Login.Models.StellenangebotUebersicht
+@{
     ViewBag.Title = "Hiwi Börse Ulm - Stellenangebote";
 }
 
 <h2>Hiwi Börse - Universität Ulm - Stellenangebote</h2>
 
-@Html.Action("_Filter", "AngeboteManager")
-<div id="StellenangeboteÜbersicht">
-@Html.Action("_StellenAngeboteÜbersicht", "AngeboteManager")
+
+  <div id="stellenangebotUebersicht">
+@Html.Partial("_Stellenangebote", Model)
 </div>
+

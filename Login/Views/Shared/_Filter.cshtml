@@ -4,7 +4,7 @@
     Layout = "";
 }
 
-@using (Ajax.BeginForm("_StellenAngeboteÜbersicht", "AngeboteManager", new AjaxOptions(){ UpdateTargetId = "StellenangeboteÜbersicht", HttpMethod = "Post"}))
+@using (Ajax.BeginForm("Filtern", "AngeboteManager", new AjaxOptions() { UpdateTargetId = "stellenangebotUebersicht", InsertionMode = InsertionMode.Replace }))
 {
     @Html.DropDownListFor(model => model.institut, (IEnumerable<SelectListItem>)ViewData["Institute"])
     @Html.DropDownListFor(model => model.monatsStunden, (IEnumerable<SelectListItem>)ViewData["MonatsStunden"])
