@@ -18,5 +18,6 @@ namespace Login.Models
         {
             angebote = null;
         }
+
     }
 }

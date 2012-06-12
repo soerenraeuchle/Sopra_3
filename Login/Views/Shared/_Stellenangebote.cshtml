@@ -1,33 +1,120 @@
-@model Login.Models.StellenangebotUebersicht
+﻿@model Login.Models.StellenangebotUebersicht
 
 @{
     ViewBag.Title = "Stellenangebote";
-}
 
-@{
-    if(this.Model.angebote.Count != 0)
-    {
-        <h3>Derzeit sind @this.Model.angebote.Count Angebote verfügbar</h3>
-  
-        for (int i = 0; i < Model.angebote.Count; i++ )
-        {
-            <div>@Model.angebote.ElementAt(i).stellenName ||  
-            @Model.angebote.ElementAt(i).institut ||  
-            @Model.angebote.ElementAt(i).ort ||  
-            @Model.angebote.ElementAt(i).vorraussetzungen || 
-            @Model.angebote.ElementAt(i).anzahlOffeneStellen
-            @using (Html.BeginForm("GetStelleAngebot", "AngeboteManager", new {view = "anzeigen"}))
-            {
-                @Html.HiddenFor(model => model.angebote.ElementAt(i).id)
-                <input type="submit"  value="ansehen" />
-            }
-            </div>                                                                                             
-            <hr />
-        }
-    }
-    else
-    {
-         <div>Sie haben keine angebote ausgeschrieben</div>   
-    }
 }
-   
+@Html.Action("_Filter", "AngeboteManager")
+
+
+  
+@{
+    var grid = new WebGrid(
+         defaultSort: "stellenName",
+         ajaxUpdateContainerId: "grid",
+         ajaxUpdateCallback: "updateGrid",
+         canPage: false,
+         canSort: false);
+    grid.Bind((IEnumerable<Login.Models.Stellenangebot>)Model.angebote, autoSortAndPage: true);
+      
+     
+}  
+
+
+  <div id="grid">
+
+      
+
+    @{ if (Model.angebote.Count != 0)
+       {
+         
+    @grid.GetHtml(
+        tableStyle: "webgrid",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style",
+
+
+
+    columns: grid.Columns(
+
+        grid.Column(
+            columnName: "id",
+            style: "idColumn"),
+
+        grid.Column(
+             columnName: "stellenName",
+             header: "Name",
+             style: "uebersichtColumn"),
+
+        grid.Column(
+             columnName: "institut",
+             header: "Institut",
+             style: "uebersichtColumn"),
+
+        grid.Column(
+              columnName: "monatsStunden",
+              header: "Monats Stunden",
+              style: "uebersichtColumn"),
+        grid.Column(
+             columnName: "anzahlOffeneStellen",
+             header: "Offene Stellen",
+             style: "uebersichtColumn")
+       ))     
+
+        <form id="FormStelleAnsehen" action="/AngeboteManager/GetStelleAngebot?view=anzeigen" method="post">           
+        <input type="hidden" name="id" />
+
+        </form>
+
+       }
+       else
+       {
+            @:Ihre Suche ergab Keine Treffer.
+       }
+       }
+
+       </div>
+
+<script type="text/javascript">
+    function updateGrid() {
+        var headerCells = $("#grid tr:eq(0) th");
+        var firstRowCells = $("#grid tr:eq(1) td");
+        $(headerCells[0]).addClass($(firstRowCells[0]).attr("class"));
+
+
+    }
+    updateGrid();
+        $(function () {
+
+        $('tbody tr').live('hover', function () {
+            $(this).toggleClass('clickable');
+        }).live('click', function () {
+
+            var temp = $(this).find('td:first').text();
+
+            document.forms["FormStelleAnsehen"].id.value = temp;
+            document.forms["FormStelleAnsehen"].submit();
+
+        });
+    });
+/*
+    $(document).ready(function () {
+
+        function updateGrid(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            var grid = $(this).parents('.ajaxGrid');
+            var id = grid.attr('id');
+            grid.load(url + ' #' + id);
+        };
+        $('.ajaxGrid table thead tr a').live('click', updateGrid);
+        $('.ajaxGrid table tfoot tr a').live('click', updateGrid);
+    });
+    */
+</script>    
+
+  
+

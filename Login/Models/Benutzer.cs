@@ -68,25 +68,6 @@ namespace Login.Models
         
     }
 
-    //TODO<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    public class Admin : Benutzer
-    {
-        public Admin()
-        {
-            this.rechte = 3;
-            this.freischaltung = true;
-        }
-    }
-
-    public class Bearbeiter : Benutzer
-    {
-        public Bearbeiter()
-        {
-            this.rechte = 2;
-            this.freischaltung = false;
-        }
-    }
-
     public class Anbieter : Benutzer
     {
         //---------------Veranstalter relevant--------------------------------------
@@ -95,7 +76,6 @@ namespace Login.Models
             this.rechte = 1;
             this.stellvertreterID = -1;
         }
-
 
 
         [Required]
@@ -113,10 +93,7 @@ namespace Login.Models
         public Bewerber()
         {
             this.rechte = 0;
-            this.freischaltung = true;
         }
-
-
         [Required]
         [StringLength(50)]
         public string strasse { get; set; }
